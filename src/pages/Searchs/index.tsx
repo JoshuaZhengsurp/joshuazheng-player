@@ -4,8 +4,9 @@ import "./index.scss"
 import { ConfigProvider, Pagination, Tabs } from 'antd';
 import { useTabsItems } from './useTabsItems';
 import { songsAPI } from '@/api';
+import { buildSearchData } from '@/utils/constructdata';
 
-const MediaType = {
+const MediaType: Rc<string, number> = {
   "1": 1,
   "2": 10,
   "3": 100,
@@ -47,7 +48,7 @@ function Searchs() {
 
     if (tabActiveKey === '8' /* 动漫接口 */) {
       songsAPI.searchVideo({
-        name: keyword,
+        name: _keyword,
         from: currentPage,
         size: 30,
       }).then(({ data }) => {
@@ -57,16 +58,32 @@ function Searchs() {
         setSongCount(tableData.songCount);
       })
     } else { /* 音乐接口*/
-
+      songsAPI.searchPlaylist({
+        keywords: _keyword,
+        type: currentMediaType,
+        offset: (currentPage - 1) * 30,
+        limit: 30,
+      }).then(({ data }) => {
+        const tableData = buildSearchData(tabActiveKey, data.result);
+        setSongs(tableData.songs);
+        setSongCount(tableData.songCount);
+      })
     }
   }
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>){
+  const pageChange = (idx: number) => {
+    setCurrentPage(idx);
+  }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   }
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>){
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       Navigate(`/search?keyword=${encodeURIComponent(keyword)}`);
     }
+  }
+  const onChange = (key: string) => {
+    setCurrentMediaType(MediaType[key]);
+    setTabActiveKey(key);
   }
   return (
     <>
@@ -81,7 +98,7 @@ function Searchs() {
         </div>
       </div>
       <div className='wrap'>
-        <Tabs activeKey={tabActiveKey} items={item} onChange={onChange}></Tabs>
+        <Tabs activeKey={tabActiveKey} items={items} onChange={onChange}></Tabs>
         {/* 分页 */}
         {
           songs.length !== 0
@@ -102,8 +119,7 @@ function Searchs() {
                   total={songCount}
                   pageSize={30}
                   onChange={pageChange}
-                >
-                </Pagination>
+                />
               </ConfigProvider>
             </div>
           )

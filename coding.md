@@ -160,8 +160,11 @@ export default reducer;
 ```tsx
 musicPlayer type (@/utils/usePlayerMusic) (√)
 store / api vite 自动导入导出
-qcode_login
+qcode_login (√)
 loading animal
+将只要数据预存入，避免切换回路由时，数据的重新请求
+search接口测试
+背景页面切换
 ```
 
 ## question
@@ -183,7 +186,6 @@ loading animal
 ```tsx
 pages/home:
 headerLink?
-playlist.map -> id? coverImgUrl? item.name?
 
 video source
 ```
