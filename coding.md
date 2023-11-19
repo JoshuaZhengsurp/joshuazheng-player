@@ -178,3 +178,12 @@ loading animal
 9. ConfugProvider
 10. padStart
 ```
+
+## or Bug
+```tsx
+pages/home:
+headerLink?
+playlist.map -> id? coverImgUrl? item.name?
+
+video source
+```

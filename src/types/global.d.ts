@@ -20,9 +20,10 @@ declare global {
         singer: string
         album: string
         cover: string
-        src: string
+        src?: string
         time: number
-        mv: string
+        mv: number
+        lyric?: string
     }
 
     interface MusicPlayer {

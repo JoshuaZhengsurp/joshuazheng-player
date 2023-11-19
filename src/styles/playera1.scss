@@ -907,7 +907,8 @@ body.light-mode .video-bg:before {
   bottom: 0;
   display: flex;
   width: 100%;
-  background-color: var(--theme-bg-color);
+  // background-color: var(--theme-bg-color);
+  background-color: rgba(16 18 27 / 90%);
 
 
   .song-info {

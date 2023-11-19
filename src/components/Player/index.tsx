@@ -112,7 +112,7 @@ export default function Player() {
                       <span>{formatTime(currentTime)}</span>
                       <div className="w-full px-10">
                         <Slider
-                          value={currentLine}
+                          value={currentTime}
                           onChange={SliderChange}
                           max={duration}
                           disabled={false}
