@@ -1,0 +1,180 @@
+## build&coding
+```tsx
+npm init vite@latest
+npm i
+npm i react-router-dom
+npm i @types/node --save-dev
+npm i react-redux @reduxjs/toolkit redux-persist --save-dev
+npm i unplugin-auto-import --save-dev
+npm i node-sass sass-loader --save-dev //?
+npm install antd @ant-design/icons --save-dev
+```
+
+```tsx
+vite.config.ts:
+resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    }
+}
+plugins: [
+  AutoImport({
+    imports: ["react"],
+    dirs: [
+      // 'src/utils/**',
+      // 'src/stores/**',
+      // 'src/hooks/**'
+    ],
+    dts: 'src/types/imports.d.ts',
+    eslintrc: {
+      enabled: true
+    }
+  }),
+],
+
+tsconfig.json:
+"baseUrl": "./",
+"paths": {
+  "@/*": [
+    "src/*"
+  ]
+}
+```
+
+```tsx
+api:
+import axios, { InternalAxiosRequestConfig } from 'axios'
+
+
+const request = axios.create({
+    baseURL: import.meta.env.VITE_APP_URL,
+    timeout: 10000,
+    withCredentials: true, //?
+});
+
+// 请求拦截器
+request.interceptors.request.use(
+    (config: InternalAxiosRequestConfig) => {
+        config.params = {
+            ...config.params,
+            timestamp: Date.now()
+        };
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+)
+
+// 响应拦截器
+request.interceptors.request.use(
+    (response) => {
+        return response.data;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+)
+
+export default request;
+export { request };
+
+import request from './request'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
+
+export default {
+    get(url: string, params: Record<string, any> = {}, config: AxiosRequestConfig = {}): Promise<AxiosResponse> {
+        return request.get(url, { ...config, params });
+    },
+    post(url: string, data: Record<string, any> = {}, config: AxiosRequestConfig = {}): Promise<AxiosResponse> {
+        return request.post(url, data.config);
+    },
+    put(url: string, data: Record<string, any>, config: AxiosRequestConfig = {}): Promise<AxiosResponse> {
+        return request.put(url, data, config);
+    },
+    delete(url: string, data: Record<string, string>, config: AxiosRequestConfig = {}): Promise<AxiosResponse<any>> {
+        return request.delete(url, { ...config, data });
+    },
+    patch(url: string, data: Record<string, string>, config: AxiosRequestConfig = {}): Promise<AxiosResponse<any>> {
+        return request.patch(url, { ...config, data });
+    },
+    head(url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse<any>> {
+        return request.head(url, config);
+    }
+}
+```
+```tsx
+store:
+// 出口文件
+import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import persistStore from 'redux-persist/es/persistStore';
+import storage from 'redux-persist/lib/storage';
+// 导入子模块
+// ...
+
+const persistConfig = {
+    key: 'root',
+    storage,
+};
+const persistedReducer = persistReducer(persistConfig, combineReducers({
+
+}));
+const store = configureStore({
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false,
+    }),
+    reducer: persistedReducer
+});
+const persistor = persistStore(store);
+
+// 导出
+export { store, persistor };
+export default store;
+
+// module
+import { createSlice } from "@reduxjs/toolkit";
+const initialState = {
+}
+const Store = createSlice({
+    name,
+    initialState,
+    reducers: {
+    }
+})
+
+const { 
+} = Store.actions;
+const reducer = Store.reducer;
+
+// actions导出
+export { 
+}
+// reducer导出
+export default reducer;
+
+```
+
+
+## todo
+```tsx
+musicPlayer type (@/utils/usePlayerMusic) (√)
+store / api vite 自动导入导出
+qcode_login
+loading animal
+```
+
+## question
+```tsx
+
+1. persist & redux-tookit
+2. useSelector, useDispatch
+3. audio
+4. RegExc
+5. useNavigate
+6. ReturenType<(xxx)=>(T)>
+7. video
+8. Suspense (react)
+9. ConfugProvider
+10. padStart
+```
