@@ -1,9 +1,12 @@
-import { songsAPI } from "@/api";
-import { addSongs, setPlaying } from "@/stores/modules/playerStore";
-import { formatTimes } from "@/utils/formatTime";
 import { Col, Row } from "antd";
 import { Film, PlayCircle } from "react-feather";
 import { useDispatch } from "react-redux";
+
+import './style.scss'
+import { songsAPI } from "@/api";
+import { addSongs, setPlaying } from "@/stores/modules/playerStore";
+import { formatTimes } from "@/utils/formatTime";
+
 
 function MKTable({ songList, style, className }: MKTableProps) {
   const dispatch = useDispatch();

@@ -163,8 +163,10 @@ store / api vite 自动导入导出
 qcode_login (√)
 loading animal
 将只要数据预存入，避免切换回路由时，数据的重新请求
-search接口测试
+search接口测试 (√)
 背景页面切换
+无法重新刷新useTabsItem
+search 样式问题
 ```
 
 ## question

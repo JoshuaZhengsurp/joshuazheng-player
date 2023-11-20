@@ -2,6 +2,7 @@
  * @function 返回搜索的表格数据
  */
 export function buildSearchData(key: string, result: any) {
+  console.log('result', result);
   const tableData: TableData = {
     songs: [],
     songCount: 0,
@@ -9,6 +10,7 @@ export function buildSearchData(key: string, result: any) {
   switch (key) {
     case '1':
     case '7':
+      // console.log()
       tableData.songs = result.songs.map((item: any) => {
         const names = item.ar.map((subItem: any) => subItem.name).join(',');
         return {

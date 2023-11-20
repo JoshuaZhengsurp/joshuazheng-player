@@ -6,18 +6,21 @@ declare global {
     }
     interface LoginProps extends ComponentProps {
         modelValue: boolean,
-        onModelValue: (e: boolean) => any,
-        onLogin: (e: boolean) => any,
+        onModelValue: (e: boolean) => any
+        onLogin: (e: boolean) => any
     }
     interface MKTableProps extends ComponentProps {
-        songList: Song[],
+        songList: Song[]
     }
     interface SingleProps extends ComponentProps {
-        data: Song[],
+        data: Song[]
     }
     interface SonglistProps extends ComponentProps {
-        data: Song[],
-        idx: string,
+        data: Song[]
+        idx: string
+    }
+    interface CommentProps extends ComponentProps {
+        data: UserComment[]
     }
 }
 

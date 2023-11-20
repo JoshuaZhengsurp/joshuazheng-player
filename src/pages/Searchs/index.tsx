@@ -2,7 +2,9 @@ import React from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import "./index.scss"
 import { ConfigProvider, Pagination, Tabs } from 'antd';
+
 import { useTabsItems } from './useTabsItems';
+
 import { songsAPI } from '@/api';
 import { buildSearchData } from '@/utils/constructdata';
 
@@ -53,7 +55,7 @@ function Searchs() {
         size: 30,
       }).then(({ data }) => {
         console.log(data);
-        const tableData = buildSearchData(tabActiveKey, data);
+        const tableData = buildSearchData(tabActiveKey, data.result);
         setSongs(tableData.songs);
         setSongCount(tableData.songCount);
       })
@@ -64,7 +66,9 @@ function Searchs() {
         offset: (currentPage - 1) * 30,
         limit: 30,
       }).then(({ data }) => {
+        console.log(data);
         const tableData = buildSearchData(tabActiveKey, data.result);
+        console.log(tableData);
         setSongs(tableData.songs);
         setSongCount(tableData.songCount);
       })
@@ -98,7 +102,7 @@ function Searchs() {
         </div>
       </div>
       <div className='wrap'>
-        <Tabs activeKey={tabActiveKey} items={items} onChange={onChange}></Tabs>
+        <Tabs activeKey={tabActiveKey} items={items} onChange={onChange} />
         {/* 分页 */}
         {
           songs.length !== 0

@@ -14,12 +14,19 @@ export const songsAPI = {
         return API.get('/cloudsearch', params);
     },
     // 动漫视频接口
-    searchVideo(params: Rc<string, any>):Promise<AxiosResponse<any>> {
+    searchVideo(params: Rc<string, any>): Promise<AxiosResponse<any>> {
         return API.get('/video/search', params);
     },
     playMusic(params: Rc<string, any>): Promise<AxiosResponse<any>> {
         return API.get('/song/url/v1', params);
     },
-
+    // 获取评论
+    getComment(params: Rc<string, any>): Promise<AxiosResponse<any>> {
+        return API.get('/comment/playlist', params);
+    },
+    // 获取歌单具体信息
+    getSimplePlaylistInfo(params: Rc<string, any>): Promise<AxiosResponse<any>> {
+        return API.get('./playlist/detail', params);
+    }
 
 }
