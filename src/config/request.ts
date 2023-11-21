@@ -1,39 +1,9 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 
-
-// const request = axios.create({
-//   baseURL: import.meta.env.VITE_APP_URL,
-//   timeout: 10000,
-//   withCredentials: true, //?
-// });
-
-// // 请求拦截器
-// request.interceptors.request.use(
-//   (config: InternalAxiosRequestConfig) => {
-//     config.params = {
-//       ...config.params,
-//       timestamp: Date.now()
-//     };
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// )
-
-// // 响应拦截器
-// request.interceptors.response.use(
-//   (response) => response
-//   ,
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// )
-
 const generalAxiosInstance = (): AxiosInstance => {
   const instance = axios.create({
     baseURL: import.meta.env.VITE_APP_URL,
-    timeout: 10000,
+    timeout: 20000,
     withCredentials: true, //?
   });
 
@@ -62,7 +32,7 @@ const generalAxiosInstance = (): AxiosInstance => {
   return instance;
 }
 
-const useRequest /* 基于默认，自定义Axios实例 */ = ({ config, requestConfig, responseConfig }: any) => {
+const getRequestInstance /* 基于默认，自定义Axios实例 */ = ({ config, requestConfig, responseConfig }: any) => {
   const instance = generalAxiosInstance();
   if (config && Object.keys(config).length > 0) {
     instance.defaults = { ...config }
@@ -83,4 +53,4 @@ const useRequest /* 基于默认，自定义Axios实例 */ = ({ config, requestC
 const request /* 默认Axios实例 */ = generalAxiosInstance();
 
 export default request;
-export { request, useRequest };
+export { request, getRequestInstance };

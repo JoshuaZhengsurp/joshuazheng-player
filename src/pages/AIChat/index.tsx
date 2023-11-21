@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Select, Space } from 'antd'
+import { Select, Space, Input } from 'antd'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { xonokai } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 import './index.scss'
 import { Components } from 'node_modules/react-markdown/lib'
+import { ChatAPI } from '@/api/modules/chatAI'
 
 
 const messageDefault = {
@@ -15,7 +16,7 @@ const messageDefault = {
   sender: "robot",
 }
 const messageInit = (msg = {}) => {
-  return Object.assign({...messageDefault}, {...msg})
+  return Object.assign({ ...messageDefault }, { ...msg }, { id: Math.random() })
 }
 
 
@@ -47,9 +48,40 @@ function ChatApp() {
 
   const handleSendMessage = () => {
     if (inputValue.trim() !== "") {
-      const newMessage = messageInit({text: inputValue, sender: "me"});
-      
+      const newMessage = messageInit({ text: inputValue, sender: "me" });
+      ChatAPI.chatWithAI({ kw: inputValue, model: currentModel })
+        .then(({ data }) => {
+          setResult(data.choices[0].message.content);
+        })
+      setMessages([...messages, newMessage]);
+      setInputValue("");
     }
+  };
+  useEffect(() => {
+    // console.log(messages, result);
+    if (result) {
+      const newMessage = messageInit({ text: result, sender: "robot" });
+      setMessages([...messages, newMessage]);
+    }
+  }, [result]);
+  useEffect(() => {
+    ChatAPI.getModelList()
+      .then(({ data }) => {
+        const arr = data.data.map((item: Rc<any, any>) => {
+          return {
+            value: item.id,
+            label: item.id,
+          };
+        });
+        setModelList(arr);
+      });
+  }, []);
+  useEffect(() => {
+    console.log(messages);
+  }, [messages])
+
+  const handleKeyPress = () => {
+    handleSendMessage();
   }
 
   return (
@@ -82,16 +114,16 @@ function ChatApp() {
             onSelect={(e) => setCurrentModel(e)}
             options={modelList}
             style={{ width: "200px", height: "auto" }}
-          >
-            <Input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="在这里输入消息..."
-              style={{ width: "100%" }}
-              onPressEnter={handleKeyPress}
-            />
-            <button onClick={handleSendMessage}>发送</button>
-          </Select>
+          />
+          <Input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="在这里输入消息..."
+            style={{ width: "100%" }}
+            onPressEnter={handleKeyPress}
+          />
+          <button onClick={handleSendMessage}>发送</button>
+
         </Space.Compact>
       </div>
     </>

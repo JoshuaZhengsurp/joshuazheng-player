@@ -1,7 +1,7 @@
 import request from './request'
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-export const useAPIMethod = (instance: AxiosInstance) => {
+export const getAPIMethodInstance = (instance: AxiosInstance) => {
     return {
         get(url: string, params: Rc<string, any> = {}, config: AxiosRequestConfig = {}): Promise<AxiosResponse<any>> {
             return instance.get(url, { params, ...config });
